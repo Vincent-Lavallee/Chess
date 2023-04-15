@@ -2,25 +2,33 @@ import ChessPieces from "@/models/ChessPieces";
 import Colors from "@/models/Colors";
 
 interface TileProps {
-  color: Colors;
-  // Wrong typing should be an enum
-  content: null | ChessPieces;
+  tileColor: Colors;
+  piece: null | ChessPieces;
+  pieceColor: Colors | null;
 }
 
-const Tile = ({ color, content }: TileProps) => {
+const Tile = ({ tileColor, piece, pieceColor }: TileProps) => {
   return (
     <div
       style={{
-        backgroundColor: color === Colors.WHITE ? "white" : "black",
+        backgroundColor: tileColor === Colors.WHITE ? "white" : "pink",
         height: 50,
         width: 50,
         color: "red",
-        alignItems: "center",
-        justifyContent: "center",
-        display: "flex",
+        ...(piece && {
+          cursor: "grab",
+        }),
       }}
     >
-      {content}
+      {piece && (
+        <div
+          style={{
+            height: 50,
+            width: 50,
+            background: `url(./pieces/${pieceColor}_${piece}.svg) center / cover`,
+          }}
+        ></div>
+      )}
     </div>
   );
 };

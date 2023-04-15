@@ -14,14 +14,24 @@ const ChessboardPageContent = ({}: ChessboardPageContentProps) => {
     <ChessboardContext.Provider value={chessboardContextValues}>
       <div
         style={{
-          display: "grid",
-          width: "400px",
-          height: "400px",
-          gridTemplateColumns: "repeat(8,1fr)",
-          gridTemplateRows: "repeat(8,1fr)",
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        {renderChessBoard()}
+        <div
+          style={{
+            display: "grid",
+            width: "400px",
+            height: "400px",
+            gridTemplateColumns: "repeat(8,1fr)",
+            gridTemplateRows: "repeat(8,1fr)",
+          }}
+        >
+          {renderChessBoard()}
+        </div>
       </div>
     </ChessboardContext.Provider>
   );

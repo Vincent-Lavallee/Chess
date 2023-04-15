@@ -5,9 +5,9 @@ import Colors from "@/models/Colors";
 interface ChessboardPageContentHandlersHookParams {
   chessboard: string;
 }
-function useChessboardHandlers({
+const useChessboardHandlers = ({
   chessboard,
-}: ChessboardPageContentHandlersHookParams) {
+}: ChessboardPageContentHandlersHookParams) => {
   const renderChessBoard = () => {
     return chessboard
       .split("/")
@@ -27,8 +27,15 @@ function useChessboardHandlers({
         return (
           // Key shouldn't be index and Tile should be comming from the argument of the function. It'll make it easier to handle theme etc ...
           <Tile
-            content={tileContent as ChessPieces}
-            color={
+            piece={tileContent as ChessPieces}
+            pieceColor={
+              tileContent
+                ? tileContent === tileContent?.toLowerCase()
+                  ? Colors.BLACK
+                  : Colors.WHITE
+                : null
+            }
+            tileColor={
               (index + 1 * ((index - (index % 8)) / 8)) % 2 === 0
                 ? Colors.WHITE
                 : Colors.BLACK
@@ -42,6 +49,6 @@ function useChessboardHandlers({
   return {
     renderChessBoard,
   };
-}
+};
 
 export default useChessboardHandlers;
