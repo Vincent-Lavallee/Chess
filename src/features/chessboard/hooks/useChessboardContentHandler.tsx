@@ -27,7 +27,7 @@ const useChessboardHandlers = ({
         return (
           // Key shouldn't be index and Tile should be comming from the argument of the function. It'll make it easier to handle theme etc ...
           <Tile
-            piece={tileContent as ChessPieces}
+            piece={tileContent?.toLowerCase() as ChessPieces}
             pieceColor={
               tileContent
                 ? tileContent === tileContent?.toLowerCase()
