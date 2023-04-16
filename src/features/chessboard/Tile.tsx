@@ -75,7 +75,7 @@ const Tile = ({
             width: 75,
             background: `url(./pieces/${pieceColor}_${piece}.svg) center / cover`,
           }}
-        ></div>
+        />
       )}
     </div>
   );
