@@ -3,12 +3,15 @@ import Tile from "../Tile";
 import Colors from "@/models/Colors";
 
 interface ChessboardPageContentHandlersHookParams {
-  chessboard: string;
+  fenString: string;
 }
 const useChessboardHandlers = ({
-  chessboard,
+  fenString,
 }: ChessboardPageContentHandlersHookParams) => {
-  const getChessboardNotation = (index: number) => {
+  /**
+   * @private
+   */
+  const getTileNotation = (index: number) => {
     const letterNotation = String.fromCharCode(97 + (index % 8));
     const numberNotation = (8 - (index - (index % 8)) / 8).toString();
 
@@ -17,9 +20,17 @@ const useChessboardHandlers = ({
     return notation;
   };
 
+  const getWhoseTurnItIs = () => {
+    const whoseTurnItIs = fenString.split(" ")[1];
+
+    return whoseTurnItIs === "w" ? Colors.WHITE : Colors.BLACK;
+  };
+
   const renderChessBoard = () => {
-    return chessboard
-      .split("/")
+    return fenString
+      .replaceAll("/", "")
+      .split(" ")[0]
+      .split("")
       .reduce((acc, row) => {
         row.split("").map((tileContent) => {
           if (!isNaN(Number(tileContent))) {
@@ -37,7 +48,7 @@ const useChessboardHandlers = ({
           // Key shouldn't be index and Tile should be comming from the argument of the function. It'll make it easier to handle theme etc ...
           <Tile
             tileIndex={index}
-            boardNotation={getChessboardNotation(index)}
+            tileNotation={getTileNotation(index)}
             piece={tileContent?.toLowerCase() as ChessPieces}
             pieceColor={
               tileContent
@@ -58,6 +69,7 @@ const useChessboardHandlers = ({
   };
 
   return {
+    getWhoseTurnItIs,
     renderChessBoard,
   };
 };

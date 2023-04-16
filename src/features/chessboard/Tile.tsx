@@ -2,12 +2,13 @@ import ChessPieces from "@/models/ChessPieces";
 import Colors from "@/models/Colors";
 import BoardNotation from "./BoardNotation";
 import { useEffect } from "react";
+import useTile from "./hooks/useTile";
 
 interface TileProps {
   tileColor: Colors;
   piece: null | ChessPieces;
   pieceColor: Colors | null;
-  boardNotation: string;
+  tileNotation: string;
   tileIndex: number;
 }
 
@@ -15,36 +16,10 @@ const Tile = ({
   tileColor,
   piece,
   pieceColor,
-  boardNotation,
+  tileNotation,
   tileIndex,
 }: TileProps) => {
-  //See https://www.javascripttutorial.net/web-apis/javascript-drag-and-drop/
-  // We should do a custom hook for this
-  useEffect(() => {
-    const tileElement = document.getElementById(`tile-${tileIndex}`);
-    if (piece) {
-      tileElement?.addEventListener("dragstart", dragEvent);
-    }
-
-    tileElement?.addEventListener("drop", (e) => {
-      e.preventDefault();
-      const data = e.dataTransfer?.getData("text");
-      console.log(`${data} to ${boardNotation}`);
-    });
-
-    tileElement?.addEventListener("dragover", preventDefault);
-
-    tileElement?.addEventListener("dragleave", preventDefault);
-
-    tileElement?.addEventListener("dragenter", preventDefault);
-
-    return () => {
-      tileElement?.removeEventListener("dragstart", dragEvent);
-      tileElement?.removeEventListener("dragover", preventDefault);
-      tileElement?.removeEventListener("dragleave", preventDefault);
-      tileElement?.removeEventListener("dragenter", preventDefault);
-    };
-  }, [piece, tileIndex]);
+  useTile({ piece, tileIndex, tileNotation });
 
   return (
     <div
@@ -61,7 +36,7 @@ const Tile = ({
       id={`tile-${tileIndex}`}
     >
       <BoardNotation
-        notation={boardNotation}
+        notation={tileNotation}
         tileColor={tileColor}
         tileIndex={tileIndex}
       />
@@ -79,14 +54,6 @@ const Tile = ({
       )}
     </div>
   );
-};
-
-const dragEvent = (e: DragEvent) => {
-  e.dataTransfer?.setData("text/plain", `${(e!.target as HTMLElement)!.id}`);
-};
-
-const preventDefault = (e: DragEvent) => {
-  e.preventDefault();
 };
 
 export default Tile;

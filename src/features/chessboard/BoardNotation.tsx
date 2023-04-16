@@ -19,6 +19,7 @@ const BoardNotation = ({
       {showLetterNotation && (
         <div
           style={{
+            userSelect: "none",
             position: "absolute",
             padding: "2px",
             color: tileColor === Colors.WHITE ? "pink" : "white",
@@ -32,6 +33,7 @@ const BoardNotation = ({
       {showNumberNotation && (
         <div
           style={{
+            userSelect: "none",
             position: "absolute",
             padding: "2px",
             color: tileColor === Colors.WHITE ? "pink" : "white",

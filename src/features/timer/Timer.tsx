@@ -1,5 +1,5 @@
 import Colors from "@/models/Colors";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { ChessboardContext } from "../chessboard/hooks/useChessboardContext";
 
 interface TimerProps {
@@ -7,35 +7,27 @@ interface TimerProps {
 }
 
 const Timer = ({ color }: TimerProps) => {
-  const { isWhiteTurn, setBlackTimer, setWhiteTimer, whiteTimer, blackTimer } =
-    useContext(ChessboardContext);
+  const { getWhoseTurnItIs, fenString } = useContext(ChessboardContext);
+
+  const [time, setTime] = useState(600);
 
   useEffect(() => {
     if (
-      (isWhiteTurn && color === Colors.WHITE) ||
-      (!isWhiteTurn && color === Colors.BLACK)
+      (getWhoseTurnItIs() && color === Colors.WHITE) ||
+      (!getWhoseTurnItIs() && color === Colors.BLACK)
     ) {
       const interval = setInterval(() => {
-        if (color === Colors.WHITE) {
-          setWhiteTimer((prev) => {
-            if (prev === 1) clearInterval(interval);
-            return prev - 1;
-          });
-        } else {
-          setBlackTimer((prev) => {
-            if (prev === 1) clearInterval(interval);
-            return prev - 1;
-          });
-        }
+        setTime((prev) => {
+          if (prev === 1) clearInterval(interval);
+          return prev - 1;
+        });
       }, 1000);
 
       return () => {
         clearInterval(interval);
       };
     }
-  }, [color, isWhiteTurn, setBlackTimer, setWhiteTimer]);
-
-  const timeToShow = color === Colors.WHITE ? whiteTimer : blackTimer;
+  }, [color, getWhoseTurnItIs, fenString]);
 
   return (
     <div
@@ -45,10 +37,10 @@ const Timer = ({ color }: TimerProps) => {
         display: "flex",
         justifyContent: "flex-end",
         margin: "20px 00px",
-        ...(timeToShow <= 60 && { color: "red" }),
+        ...(time <= 60 && { color: "red" }),
       }}
     >
-      <div>{formatTime(timeToShow)}</div>
+      <div>{formatTime(time)}</div>
     </div>
   );
 };
