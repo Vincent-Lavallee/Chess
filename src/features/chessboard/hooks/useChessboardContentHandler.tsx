@@ -8,6 +8,15 @@ interface ChessboardPageContentHandlersHookParams {
 const useChessboardHandlers = ({
   chessboard,
 }: ChessboardPageContentHandlersHookParams) => {
+  const getChessboardNotation = (index: number) => {
+    const letterNotation = String.fromCharCode(97 + (index % 8));
+    const numberNotation = (8 - (index - (index % 8)) / 8).toString();
+
+    const notation = `${letterNotation}${numberNotation}`;
+
+    return notation;
+  };
+
   const renderChessBoard = () => {
     return chessboard
       .split("/")
@@ -27,6 +36,8 @@ const useChessboardHandlers = ({
         return (
           // Key shouldn't be index and Tile should be comming from the argument of the function. It'll make it easier to handle theme etc ...
           <Tile
+            tileIndex={index}
+            boardNotation={getChessboardNotation(index)}
             piece={tileContent?.toLowerCase() as ChessPieces}
             pieceColor={
               tileContent
